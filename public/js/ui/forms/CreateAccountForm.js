@@ -2,13 +2,24 @@
  * Класс CreateAccountForm управляет формой
  * создания нового счёта
  * */
+
 class CreateAccountForm extends AsyncForm {
   /**
    * Создаёт счёт с помощью Account.create и закрывает
    * окно в случае успеха, а также вызывает App.update()
    * и сбрасывает форму
    * */
-  onSubmit(data) {
+  onSubmit(options) {
 
+    Account.create(options, (e, response) => {
+      const form2 = document.querySelector("#new-account-form");
+      if (response.success) {
+        App.getModal('createAccount').close();
+        form2.reset();
+        App.update();
+        console.log('Сработала форма создания нового счета CreateAccountForm');
+      }
+    }
+    )
   }
 }
