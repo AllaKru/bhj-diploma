@@ -30,6 +30,7 @@ class UserWidget {
       return;
     } else {
       const name = this.element.querySelector('.user-name');
+      // document.querySelector('.user-name');
       name.textContent = user.name;
     }
   }

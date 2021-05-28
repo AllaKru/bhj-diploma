@@ -11,11 +11,12 @@ class Account extends Entity {
    * Получает информацию о счёте
    * */
 
-  static get(id, callback) {
+  static get(id='' ,  callback = f =>f) {
     let options = {
-      url: `${this.URL}/ ${id}`,
-      responseType: 'JSON',
-      data: data,
+      url: `${this.url}`+ '/' + `${id}`,
+      responseType: 'json',
+      data: null, //????????
+      id: id,
       method: 'GET',
       callback: callback
     }
@@ -23,3 +24,8 @@ class Account extends Entity {
     console.log(options)
   }
 }
+
+// Entity.get (21, (e, response)=>{
+//   console.log(e)
+//   console.log(rsponse)
+// })

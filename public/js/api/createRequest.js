@@ -2,19 +2,23 @@
 // // // // // //  * Основная функция для совершения запросов
 // // // // // //  * на сервер.
 // // // // // //  * */
-let formData = new FormData();
+
 
 const createRequest = (options = {}) => {
 
+
   try {
+    let formData = new FormData();
     const xhr = new XMLHttpRequest;
-    if (options.method === "GET") {
-      options.url += `?mail=${options.data.email}&password=${options.data.password}`;
-      console.log('Отправили гет')
-    } else {
-      for (let option in options.data) {
+    options.url += `?`;
+    for (let option in options.data) {
+      if (options.method === "GET") {
+        options.url += `${option}=${options.data[option]}&`;
+        console.log('Отправили гет, options.data =' + options.data, options)
+      }
+      else {
         formData.append(option, options.data[option]);
-        console.log('Отправили пост')
+        console.log('Отправили пост, options.data =' + options.data, options)
       }
     }
     if (options.headers) {
@@ -22,21 +26,25 @@ const createRequest = (options = {}) => {
         xhr.setRequestHeader(header, options.headers[header]);
       }
     }
-
+    
     xhr.open(options.method, options.url);
     xhr.withCredentials = true;
     xhr.responseType = "json";
     xhr.send(formData);
+
     xhr.addEventListener("readystatechange", () => {
       if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+        // let err = null;
         options.callback(null, xhr.response);
-        console.log(xhr.response, xhr);
+
+        // options.callback(xhr.response.success, xhr.response);
+        // console.log(xhr.response, xhr);
       }
     })
-    return xhr;
   }
   catch (e) {
     options.callback(e, null);
+    // xhr.response = null;
     console.log('Произошла ошибка ' + e)
   }
 }

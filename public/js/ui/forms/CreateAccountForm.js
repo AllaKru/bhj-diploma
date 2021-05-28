@@ -12,12 +12,12 @@ class CreateAccountForm extends AsyncForm {
   onSubmit(options) {
 
     Account.create(options, (e, response) => {
-      const form2 = document.querySelector("#new-account-form");
+      // const form2 = document.querySelector("#new-account-form");
       if (response.success) {
         App.getModal('createAccount').close();
-        form2.reset();
+        this.element.reset();
         App.update();
-        console.log('Сработала форма создания нового счета CreateAccountForm');
+        console.log('Сработала форма создания нового счета CreateAccountForm', this.element);
       }
     }
     )

@@ -23,7 +23,7 @@ class Entity {
    * что наследуется от Entity)
    * */
 
-  static create(data, callback = f => f) {
+  static create(data, callback = f => f ) {
     let options = { data: data, url: `${this.URL}`, method: `PUT`, responseType: 'json', callback: callback };
     return createRequest(options);
   }
@@ -32,7 +32,7 @@ class Entity {
    * Удаляет информацию о счёте или доходе/расходе
    * (в зависимости от того, что наследуется от Entity)
    * */
-  static remove(data, callback) {
+  static remove(data, callback = f => f) {
     let options = { data: data, url: `${this.URL}`, method: `DELETE`, responseType: 'json', callback: callback };
     return createRequest(options);
   }

@@ -17,48 +17,41 @@ class AccountsWidget {
       throw new Error('Элемент не существует');
     }
     this.element = element;
-    this.currentAccountId = null;
     this.registerEvents();
     this.update();
   }
 
-  /**
-   * При нажатии на .create-account открывает окно
-   * #modal-new-account для создания нового счёта
-   * При нажатии на один из существующих счетов
-   * (которые отображены в боковой колонке),
-   * вызывает AccountsWidget.onSelectAccount()
-   * */
+  //   /**
+  //    * При нажатии на .create-account открывает окно
+  //    * #modal-new-account для создания нового счёта
+  //    * При нажатии на один из существующих счетов
+  //    * (которые отображены в боковой колонке),
+  //    * вызывает AccountsWidget.onSelectAccount()
+  //    * */
   registerEvents() {
     this.element.addEventListener('click', e => {
       e.preventDefault();
-      const createAccount = e.target.closest('.create-account');
-
-      if (createAccount) {
-        App.initModals()
+      if (e.target.closest('.pull-right')) {
         const modal = App.getModal('createAccount');
-        return modal.open();
+        modal.open();
       }
-
-      const selectedAccount = e.target.closest('.account');
-
-      if (selectedAccount) {
-        this.onSelectAccount(selectedAccount);
+      else if (e.target.closest('.account')) {
+        this.onSelectAccount(e.target.closest('.account'));
+        // console.log(e.target, e.target.closest('.account'))
       }
-    });
-
+    })
   }
 
-  /**
-   * Метод доступен только авторизованным пользователям
-   * (User.current()).
-   * Если пользователь авторизован, необходимо
-   * получить список счетов через Account.list(). При
-   * успешном ответе необходимо очистить список ранее
-   * отображённых счетов через AccountsWidget.clear().
-   * Отображает список полученных счетов с помощью
-   * метода renderItem()
-   * */
+  //   /**
+  //    * Метод доступен только авторизованным пользователям
+  //    * (User.current()).
+  //    * Если пользователь авторизован, необходимо
+  //    * получить список счетов через Account.list(). При
+  //    * успешном ответе необходимо очистить список ранее
+  //    * отображённых счетов через AccountsWidget.clear().
+  //    * Отображает список полученных счетов с помощью
+  //    * метода renderItem()
+  //    * */
   update() {
     if (!User.current()) {
       return;
@@ -71,83 +64,64 @@ class AccountsWidget {
         return;
       }
       this.clear();
-      this.renderItem(response.data);
-      console.log(response.data)
+      response.data.forEach(item => {
+        this.renderItem(item);
+        // console.log(item)
+      });
+      // console.log(response, response.data)
     });
 
   }
 
-  /**
-   * Очищает список ранее отображённых счетов.
-   * Для этого необходимо удалять все элементы .account
-   * в боковой колонке
-   * */
+  //   /**
+  //    * Очищает список ранее отображённых счетов.
+  //    * Для этого необходимо удалять все элементы .account
+  //    * в боковой колонке
+  //    * */
   clear() {
     [...this.element.querySelectorAll('.account')].forEach(item => item.remove());
   }
 
-  /**
-   * Срабатывает в момент выбора счёта
-   * Устанавливает текущему выбранному элементу счёта
-   * класс .active. Удаляет ранее выбранному элементу
-   * счёта класс .active.
-   * Вызывает App.showPage( 'transactions', { account_id: id_счёта });
-   * */
+  //   /**
+  //    * Срабатывает в момент выбора счёта
+  //    * Устанавливает текущему выбранному элементу счёта
+  //    * класс .active. Удаляет ранее выбранному элементу
+  //    * счёта класс .active.
+  //    * Вызывает App.showPage( 'transactions', { account_id: id_счёта });
+  //    * */
   onSelectAccount(element) {
-    if (this.currentAccountId) {
-      const account = this.element
-        .querySelector(`.account[data-id="${this.currentAccountId}"]`);
-      if (account) {
-        account.classList.remove('active');
-      }
-      else {
-        this.currentAccountId = null;
-      }
+    if (this.element.querySelector('.active')) {
+      this.element.querySelector('.active').classList.remove('active');
     }
-
     element.classList.add('active');
-
-    const { id } = element.dataset;
-
-    this.currentAccountId = id;
-
-    App.showPage('transactions', {
-      account_id: id
-    });
-
+   App.showPage('transactions', { account_id: element.dataset.id});
+   
+    // console.log(element.dataset.id, element, element.closest('.account'))
   }
 
-  /**
-   * Возвращает HTML-код счёта для последующего
-   * отображения в боковой колонке.
-   * item - объект с данными о счёте
-   * */
+  //   /**
+  //    * Возвращает HTML-код счёта для последующего
+  //    * отображения в боковой колонке.
+  //    * item - объект с данными о счёте
+  //    * */
   getAccountHTML(item) {
     return `
-      <li class="account" data-id="${item.id}">
-          <a href="#">
-              ${item.name} / ${item.sum} ₽
-          </a>
-      </li>
-    `;
+          <li class="account" data-id="${item.id}">
+              <a href="#">
+                  ${item.name} / ${item.sum} ₽
+              </a>
+          </li>
+        `;
   }
 
-  /**
-   * Получает массив с информацией о счетах.
-   * Отображает полученный с помощью метода
-   * AccountsWidget.getAccountHTML HTML-код элемента
-   * и добавляет его внутрь элемента виджета
-   * */
-  renderItem(data) {
-    data.forEach(item => {
-      const { name, id } = item,
-        sum = item.sum.toLocaleString('en'),
-        html = this.getAccountHTML({
-          name, id, sum
-        });
-      this.element.insertAdjacentHTML('beforeend', html);
-      console.log(data)
-    });
+  //   /**
+  //    * Получает массив с информацией о счетах.
+  //    * Отображает полученный с помощью метода
+  //    * AccountsWidget.getAccountHTML HTML-код элемента
+  //    * и добавляет его внутрь элемента виджета
+  //    * */
+  renderItem(item) {
+    this.element.insertAdjacentHTML('beforeend', this.getAccountHTML(item));
   }
 }
 
