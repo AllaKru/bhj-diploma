@@ -93,8 +93,9 @@ class AccountsWidget {
     if (this.element.querySelector('.active')) {
       this.element.querySelector('.active').classList.remove('active');
     }
-    element.classList.add('active');
-   App.showPage('transactions', { account_id: element.dataset.id});
+    element.closest('.account').classList.add('active');
+    // console.log(element,element.dataset.id, element.dataset )
+   App.showPage('transactions', { account_id: element.closest('.account').dataset.id});
    
     // console.log(element.dataset.id, element, element.closest('.account'))
   }

@@ -10,13 +10,17 @@ const createRequest = (options = {}) => {
   try {
     let formData = new FormData();
     const xhr = new XMLHttpRequest;
-    options.url += `?`;
-    for (let option in options.data) {
-      if (options.method === "GET") {
+
+    if (options.method === "GET") {
+      options.url += `?`;
+      for (let option in options.data) {
+
         options.url += `${option}=${options.data[option]}&`;
         console.log('Отправили гет, options.data =' + options.data, options)
       }
-      else {
+    }
+    else {
+      for (let option in options.data) {
         formData.append(option, options.data[option]);
         console.log('Отправили пост, options.data =' + options.data, options)
       }
@@ -26,7 +30,7 @@ const createRequest = (options = {}) => {
         xhr.setRequestHeader(header, options.headers[header]);
       }
     }
-    
+
     xhr.open(options.method, options.url);
     xhr.withCredentials = true;
     xhr.responseType = "json";
