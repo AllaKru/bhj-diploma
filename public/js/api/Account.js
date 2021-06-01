@@ -6,15 +6,15 @@
 
 class Account extends Entity {
 
-  static URL= '/account';
+  static URL = '/account';
   /**
    * Получает информацию о счёте
    * */
 
-  static get(id='' ,  callback = f =>f) {
+  static get(id = '', callback = f => f) {
     let options = {
-      url: `${this.URL}`+ '/' + `${id}`,
-    //  url: this.URL + '/' + id,
+      url: `${this.URL}/${id}`,
+      //  url: this.URL + '/' + id,
       responseType: 'json',
       data: null, //????????
       // id: id,

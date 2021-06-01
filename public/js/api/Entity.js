@@ -39,4 +39,6 @@ class Entity {
 
 }
 
-
+// Entity.create( data, function ( err, response ) {
+//  console.log()
+// });

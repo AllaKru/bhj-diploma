@@ -25,9 +25,10 @@ class CreateTransactionForm extends AsyncForm {
 
         if (response.success) {
           const select = this.element.querySelector(".accounts-select");
+          select.innerHTML = '';
           response.data.forEach(element => {
-            select.innerHTML = '';
             select.insertAdjacentHTML("beforeend", `<option value="${element.id}">${element.name}</option>`);
+            // select.innerHTML +=`<option value="${element.id}">${element.name}</option>`
           });
         }
       })
@@ -41,7 +42,7 @@ class CreateTransactionForm extends AsyncForm {
   //  * */
   onSubmit(options) {
     Transaction.create(options, (e, response) => {
-      
+
       if (response.success) {
         this.element.reset();
         App.getModal('newExpense').close();
