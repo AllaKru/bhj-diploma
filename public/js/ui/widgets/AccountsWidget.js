@@ -2,6 +2,7 @@
  * Класс AccountsWidget управляет блоком
  * отображения счетов в боковой колонке
  * */
+
 class AccountsWidget {
   /**
    * Устанавливает текущий элемент в свойство element
@@ -12,6 +13,7 @@ class AccountsWidget {
    * Если переданный элемент не существует,
    * необходимо выкинуть ошибку.
    * */
+
   constructor(element) {
     if (!element) {
       throw new Error('Элемент не существует');
@@ -29,6 +31,7 @@ class AccountsWidget {
   //    * вызывает AccountsWidget.onSelectAccount()
   //    * */
   registerEvents() {
+
     this.element.addEventListener('click', e => {
       e.preventDefault();
       if (e.target.closest('.pull-right')) {
@@ -53,6 +56,7 @@ class AccountsWidget {
   //    * метода renderItem()
   //    * */
   update() {
+
     if (!User.current()) {
       return;
     }
@@ -71,6 +75,7 @@ class AccountsWidget {
       // console.log(response, response.data)
     });
 
+
   }
 
   //   /**
@@ -79,6 +84,7 @@ class AccountsWidget {
   //    * в боковой колонке
   //    * */
   clear() {
+
     [...this.element.querySelectorAll('.account')].forEach(item => item.remove());
   }
 
@@ -125,4 +131,6 @@ class AccountsWidget {
     this.element.insertAdjacentHTML('beforeend', this.getAccountHTML(item));
   }
 }
+
+
 

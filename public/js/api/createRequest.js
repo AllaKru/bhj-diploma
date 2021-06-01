@@ -7,6 +7,7 @@
 const createRequest = (options = {}) => {
 
 
+
   try {
     let formData = new FormData();
     const xhr = new XMLHttpRequest;
@@ -52,3 +53,4 @@ const createRequest = (options = {}) => {
     console.log('Произошла ошибка ' + e)
   }
 }
+

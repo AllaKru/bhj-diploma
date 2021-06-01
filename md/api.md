@@ -21,12 +21,13 @@
 
 Функция является основным связующим звеном между клиентом и сервером. Через нее необходимо 
 организовать AJAX запросы на сервер используя API XMLHttpRequest.
+Функция *createRequest* ничего не возвращает.
 
 Пример вызова:
 
 ```javascript
 // здесь перечислены все возможные параметры для функции
-const xhr = createRequest({
+  createRequest({
     url: 'https://example.com', // адрес
     headers: { // произвольные заголовки, могут отсутствовать
       'Content-type': 'application/json' 
@@ -52,8 +53,7 @@ const xhr = createRequest({
 
 ### 1. XHR
 
-Константа *xhr* в примере выше содержит объект *XMLHttpRequest*, 
-функция *createRequest* ничего не возвращает.
+Константа *xhr* в примере выше содержит объект *XMLHttpRequest*.
 
 ### 2. Параметр data
 
@@ -61,7 +61,7 @@ const xhr = createRequest({
     в строке адреса. Например, листинг:
 
 ```javascript
-const xhr = createRequest({
+  createRequest({
     url: 'https://example.com',
     data: {
       mail: 'ivan@biz.pro',
@@ -84,7 +84,7 @@ xhr.send();
     *data* должны передаваться через объект FormData. Например, листинг 
 
 ```javascript
-const xhr = createRequest({
+  createRequest({
     url: 'https://example.com',
     data: {
       mail: 'ivan@biz.pro',
@@ -114,7 +114,7 @@ xhr.send( formData );
 
 ```javascript
 // при успешном выполнении
-const xhr = createRequest({
+  createRequest({
     url: 'https://example.com',
     method: 'GET',
     callback: ( err, response ) => {
@@ -132,7 +132,7 @@ const xhr = createRequest({
 
 ```javascript
 // при ошибке
-const xhr = createRequest({
+  createRequest({
     url: 'https://example.com',
     method: 'GET',
     callback: ( err, response ) => {
@@ -206,7 +206,7 @@ class Entity {
 }
 ```
 
-Метод посылает *POST* запрос на адрес, заданный *URL*.
+Метод посылает *PUT* запрос на адрес, заданный *URL*.
 Метод запускает выполнение функции *createRequest*.
 Параметр *responseType* в вызываемой внутри функции *createRequest* задан
 как *json*.
@@ -281,7 +281,7 @@ const user = {
   name: 'Vlad'
 };
 
-user.setCurrent( user );
+User.setCurrent( user );
 
 console.log( localStorage[ 'user' ]); // строка "{"id":12,"name":"Vlad"}
 ```
@@ -296,7 +296,7 @@ const user = {
   name: 'Vlad'
 };
 
-user.setCurrent( user );
+User.setCurrent( user );
 const current = User.current();
 
 console.log( current ); // объект { id: 12, name: 'Vlad' }
@@ -570,7 +570,7 @@ const data = {
 
 Метод GET - *account_id* - вернет список транзакций по конкретному счету и *success = true*
 
-Метод POST - *type*, *name*, *sum* и *account_id* - вернет *success = true*, если в поле сумма было передано не число
+Метод PUT - *type*, *name*, *sum* и *account_id* - вернет *success = true*, если в поле сумма было передано не число
 то вернет ошибку "Недопустимые символы в поле Сумма" и *success = false*
 
 Метод DELETE - *id* - вернет *success = true*

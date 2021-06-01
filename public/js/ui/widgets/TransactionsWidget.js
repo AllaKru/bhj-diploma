@@ -3,6 +3,7 @@
  * открытие всплывающих окон для
  * создания нового дохода или расхода
  * */
+
 class TransactionsWidget {
   /**
    * Устанавливает полученный элемент
@@ -10,6 +11,7 @@ class TransactionsWidget {
    * Если переданный элемент не существует,
    * необходимо выкинуть ошибку.
    * */
+
  constructor(element) {
     if (!element) {
       throw new Error('Элемент не существует');
@@ -32,6 +34,7 @@ class TransactionsWidget {
 
     createIncomeButton.addEventListener('click', () => incomeModal.open());
     createExpenseButton.addEventListener('click', () => expenseModal.open());
+
 
 
   }
