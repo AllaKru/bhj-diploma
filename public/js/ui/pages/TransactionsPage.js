@@ -17,7 +17,7 @@ class TransactionsPage {
       }
       this.element = element;
       this.registerEvents();
-      // console.log(this, this.element, element);
+      //   console.log(this, this.element, element);
 
    }
 
@@ -26,7 +26,7 @@ class TransactionsPage {
    //    * */
    update() {
       this.render(this.lastOptions);
-       console.log(this.lastOptions)
+      console.log(this.lastOptions)
       // let user = User.current();
       //  this.render({account_id: 'txjj5asckpduxzju'});
 
@@ -44,6 +44,7 @@ class TransactionsPage {
          const removeTransBtn = e.target.closest('.transaction__remove');
          if (removeAccountBtn) {
             this.removeAccount();
+
             console.log(e.target.dataset, e.target)
          }
          if (removeTransBtn) {
@@ -64,14 +65,17 @@ class TransactionsPage {
    removeAccount() {
       if (this.lastOptions) {
          if (confirm("Вы действительно хотите удалить счёт?")) {
-            Account.remove(this.lastOptions.account_id, (e, response) => {
-               console.log(e, response)
-               console.log(this.lastOptions)
+            Account.remove(this.lastOptions, (e, response) => {
+               console.log(e, response, this.lastOptions)
+               // console.log(this.lastOptions)
+
+               App.updateWidgets();
                this.clear();
+               // App.update();
             }
             )
-           
-            App.update();
+
+
          }
       }
 
@@ -84,12 +88,12 @@ class TransactionsPage {
    //    * */
    removeTransaction(id) {
       if (confirm("Вы действительно хотите удалить транзакцию?")) {
-         Transaction.remove(id, (e, response) => {
-            console.log(id)
+         Transaction.remove({ id }, (e, response) => {
+            // console.log(e, response, id, {id})
             // this.clear();
-            
+            App.update();
          });
-         App.update();
+
          // App.updateWidgets();
 
       }
@@ -108,7 +112,7 @@ class TransactionsPage {
          Account.get(options.account_id, (e, response) => {
             if (response.success) {
                this.renderTitle(response.data.name);
-               // console.log(this.lastOptions)
+               //  console.log(response.data.id, options.account_id, this.lastOptions.account_id)
             }
 
          })
