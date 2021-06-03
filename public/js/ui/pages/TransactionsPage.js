@@ -26,7 +26,7 @@ class TransactionsPage {
    //    * */
    update() {
       this.render(this.lastOptions);
-      console.log(this.lastOptions)
+      // console.log(this.lastOptions)
       // let user = User.current();
       //  this.render({account_id: 'txjj5asckpduxzju'});
 
@@ -43,13 +43,10 @@ class TransactionsPage {
          const removeAccountBtn = e.target.closest('.remove-account');
          const removeTransBtn = e.target.closest('.transaction__remove');
          if (removeAccountBtn) {
-            this.removeAccount();
-
-            console.log(e.target.dataset, e.target)
+            this.removeAccount(this.lastOptions.account_id);
          }
          if (removeTransBtn) {
             this.removeTransaction(removeTransBtn.dataset.id);
-            console.log(removeTransBtn.dataset.id, e.target.dataset, e.target)
          }
       })
    }
@@ -62,23 +59,22 @@ class TransactionsPage {
    //    * По успешному удалению необходимо вызвать метод App.update()
    //    * для обновления приложения
    //    * */
-   removeAccount() {
-      if (this.lastOptions) {
-         if (confirm("Вы действительно хотите удалить счёт?")) {
-            Account.remove(this.lastOptions, (e, response) => {
-               console.log(e, response, this.lastOptions)
-               // console.log(this.lastOptions)
+   removeAccount(id) {
 
+      if (confirm("Вы действительно хотите удалить счёт?")) {
+
+         // const data = {id : this.lastOptions.account_id} --- вариант №2 удаление аккаунта
+
+         Account.remove({id}, (e, response) => {
+            if (response.success) {
+               console.log(this.lastOptions)
                App.updateWidgets();
                this.clear();
                // App.update();
             }
-            )
-
-
          }
+         )
       }
-
    }
 
    //   /**
@@ -89,13 +85,12 @@ class TransactionsPage {
    removeTransaction(id) {
       if (confirm("Вы действительно хотите удалить транзакцию?")) {
          Transaction.remove({ id }, (e, response) => {
-            // console.log(e, response, id, {id})
-            // this.clear();
-            App.update();
+            if (response.success) {
+               console.log(e, response, id, { id })
+               // this.clear();
+               App.update();
+            }
          });
-
-         // App.updateWidgets();
-
       }
    }
    //   /**
@@ -106,7 +101,6 @@ class TransactionsPage {
    //    * */
    render(options) {
 
-      // console.log(this.lastOptions)
       if (options) {
          this.lastOptions = options;
          Account.get(options.account_id, (e, response) => {
@@ -148,9 +142,6 @@ class TransactionsPage {
    //    * в формат «10 марта 2019 г. в 03:20»
    //    * */
    formatDate(date) {
-
-
-
       // let formatter = new Intl.DateTimeFormat("ru", {
 
       //    year: "numeric",
@@ -202,10 +193,6 @@ class TransactionsPage {
       let minutes = date.slice(14, 16)
 
       return day + month + year + 'в ' + hours + minutes
-
-
-
-
    }
 
    //   /**
